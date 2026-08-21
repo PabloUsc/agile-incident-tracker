@@ -1,6 +1,5 @@
 # 🚀 Agile Incident Tracker API
 
-[![Java with Maven]](https://github.com/PabloUsc/agile-incident-tracker/actions/workflows/ci.yml)
 ![Java Version](https://img.shields.io/badge/Java-17-orange?logo=openjdk)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?logo=springboot)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql)
