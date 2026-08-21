@@ -1,7 +1,6 @@
 package com.example.incidenttracker.repository;
 
 import com.example.incidenttracker.model.Incident;
-import com.example.incidenttracker.model.IncidentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

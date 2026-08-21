@@ -3,7 +3,6 @@ package com.example.incidenttracker.service;
 import com.example.incidenttracker.dto.ProjectRequestDto;
 import com.example.incidenttracker.dto.ProjectResponseDto;
 import com.example.incidenttracker.exception.ResourceNotFoundException;
-import com.example.incidenttracker.model.Incident;
 import com.example.incidenttracker.model.Project;
 import com.example.incidenttracker.repository.IncidentRepository;
 import com.example.incidenttracker.repository.ProjectRepository;
