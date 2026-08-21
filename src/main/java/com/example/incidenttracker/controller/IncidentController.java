@@ -2,6 +2,7 @@ package com.example.incidenttracker.controller;
 
 import com.example.incidenttracker.dto.IncidentRequestDto;
 import com.example.incidenttracker.dto.IncidentResponseDto;
+import com.example.incidenttracker.model.IncidentPriority;
 import com.example.incidenttracker.model.IncidentStatus;
 import com.example.incidenttracker.service.IncidentService;
 import jakarta.validation.Valid;
@@ -61,5 +62,11 @@ public class IncidentController {
     @PatchMapping("/{id}/assignee")
     public ResponseEntity<IncidentResponseDto> assignIncident(@PathVariable Long id, @RequestParam Long assigneeId) {
         return ResponseEntity.ok(incidentService.updateAssignee(id,assigneeId));
+    }
+
+    //PATCH /api/v1/incidents/{id}/priority -> change incident priority
+    @PatchMapping("/{id}/priority")
+    public ResponseEntity<IncidentResponseDto> updateIncidentPriority(@PathVariable Long id, @RequestParam IncidentPriority priority) {
+        return ResponseEntity.ok(incidentService.updatePriority(id, priority));
     }
 }

@@ -3,16 +3,13 @@ package com.example.incidenttracker.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.incidenttracker.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.incidenttracker.dto.IncidentRequestDto;
 import com.example.incidenttracker.dto.IncidentResponseDto;
 import com.example.incidenttracker.exception.ResourceNotFoundException;
-import com.example.incidenttracker.model.Incident;
-import com.example.incidenttracker.model.IncidentStatus;
-import com.example.incidenttracker.model.Project;
-import com.example.incidenttracker.model.User;
 import com.example.incidenttracker.repository.IncidentRepository;
 import com.example.incidenttracker.repository.ProjectRepository;
 import com.example.incidenttracker.repository.UserRepository;
@@ -96,6 +93,15 @@ public class IncidentService {
             throw new ResourceNotFoundException("Incident not found with id: " + id);
         }
         incidentRepository.deleteById(id);
+    }
+
+    @Transactional
+    public IncidentResponseDto updatePriority(Long id, IncidentPriority priority) {
+        Incident incident = incidentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+        incident.setPriority(priority);
+        Incident updatedIncident = incidentRepository.save(incident);
+        return mapToDto(updatedIncident);
     }
 
     //Private helper to map Entity to Incident DTO
