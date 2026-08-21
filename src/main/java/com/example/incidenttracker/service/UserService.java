@@ -3,7 +3,9 @@ package com.example.incidenttracker.service;
 import com.example.incidenttracker.dto.UserRequestDto;
 import com.example.incidenttracker.dto.UserResponseDto;
 import com.example.incidenttracker.exception.ResourceNotFoundException;
+import com.example.incidenttracker.model.Incident;
 import com.example.incidenttracker.model.User;
+import com.example.incidenttracker.repository.IncidentRepository;
 import com.example.incidenttracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
+    private final IncidentRepository incidentRepository;
 
     @Transactional
     public UserResponseDto createUser(UserRequestDto dto) {
@@ -55,6 +59,19 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User was not found with username: " + username));
         return mapToDto(user);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("User was not found with id: " + id);
+        }
+
+        //Remove assignee from related incidents
+        List<Incident> incidents = incidentRepository.findByAssigneeId(id);
+        incidents.forEach(incident -> incident.setAssignee(null));
+
+        userRepository.deleteById(id);
     }
 
     //Private helper to map Entity to User DTO

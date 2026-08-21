@@ -79,6 +79,25 @@ public class IncidentService {
         return incidentRepository.findByProjectId(projectId).stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
+    @Transactional
+    public IncidentResponseDto updateAssignee(Long id, Long assigneeId) {
+        Incident incident = incidentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+        User newAssignee = userRepository.findById(assigneeId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + assigneeId));
+        incident.setAssignee(newAssignee);
+        Incident updatedIncident = incidentRepository.save(incident);
+        return mapToDto(updatedIncident);
+    }
+
+    @Transactional
+    public void deleteIncident(Long id) {
+        if (!incidentRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Incident not found with id: " + id);
+        }
+        incidentRepository.deleteById(id);
+    }
+
     //Private helper to map Entity to Incident DTO
     private IncidentResponseDto mapToDto(Incident incident) {
         return IncidentResponseDto.builder()

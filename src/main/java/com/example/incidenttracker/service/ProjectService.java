@@ -3,7 +3,9 @@ package com.example.incidenttracker.service;
 import com.example.incidenttracker.dto.ProjectRequestDto;
 import com.example.incidenttracker.dto.ProjectResponseDto;
 import com.example.incidenttracker.exception.ResourceNotFoundException;
+import com.example.incidenttracker.model.Incident;
 import com.example.incidenttracker.model.Project;
+import com.example.incidenttracker.repository.IncidentRepository;
 import com.example.incidenttracker.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final IncidentRepository incidentRepository;
 
     @Transactional
     public ProjectResponseDto createProject(ProjectRequestDto dto) {
@@ -49,6 +52,18 @@ public class ProjectService {
         Project project = projectRepository.findByProjectKey(projectKey)
                 .orElseThrow(() -> new ResourceNotFoundException("Project with key " + projectKey + " not found"));
         return mapToDto(project);
+    }
+
+    @Transactional
+    public void deleteProjectById(Long id) {
+        if (!projectRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Project with id " + id + " not found");
+        }
+
+        //Delete incidents related to project
+        incidentRepository.deleteByProjectId(id);
+
+        projectRepository.deleteById(id);
     }
 
     //Private helper to map Entity to ProjectDTO

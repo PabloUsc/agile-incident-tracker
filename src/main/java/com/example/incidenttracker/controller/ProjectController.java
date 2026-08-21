@@ -30,6 +30,13 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    //DELETE /api/v1/projects/{id} -> delete project
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
+        projectService.deleteProjectById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     //GET /api/v1/projects/{id} -> get project by id
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponseDto> getProjectById(@PathVariable Long id) {

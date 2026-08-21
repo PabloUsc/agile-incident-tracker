@@ -32,6 +32,13 @@ public class IncidentController {
         return ResponseEntity.ok(incidentService.getAllIncidents());
     }
 
+    //DELETE /api/v1/incidents/{id} -> delete incident
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteIncident(@PathVariable Long id) {
+        incidentService.deleteIncident(id);
+        return ResponseEntity.noContent().build();
+    }
+
     //GET /api/v1/incidents/{id} -> get incident by id
     @GetMapping("/{id}")
     public ResponseEntity<IncidentResponseDto> getIncidentById(@PathVariable Long id) {
@@ -48,5 +55,11 @@ public class IncidentController {
     @GetMapping("/project/{projectId}")
     public ResponseEntity<List<IncidentResponseDto>> getIncidentsByProject(@PathVariable Long projectId) {
         return ResponseEntity.ok(incidentService.getIncidentsByProject(projectId));
+    }
+
+    //PATCH /api/v1/incidents/{id}/assignee -> change assignee of incident
+    @PatchMapping("/{id}/assignee")
+    public ResponseEntity<IncidentResponseDto> assignIncident(@PathVariable Long id, @RequestParam Long assigneeId) {
+        return ResponseEntity.ok(incidentService.updateAssignee(id,assigneeId));
     }
 }
