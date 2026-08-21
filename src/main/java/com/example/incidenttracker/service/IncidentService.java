@@ -79,7 +79,7 @@ public class IncidentService {
         return incidentRepository.findByProjectId(projectId).stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    //Private helper to map Entity to DTO
+    //Private helper to map Entity to Incident DTO
     private IncidentResponseDto mapToDto(Incident incident) {
         return IncidentResponseDto.builder()
                 .id(incident.getId())
